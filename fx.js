@@ -130,7 +130,7 @@
   if (water) initWater(water);
 
   /* ---------- 2. Scroll reveals ---------- */
-  var sel = ".block > .eyebrow, .block > h2, .block > .body, .card, .timeline, .diagram, .photo-feature, .price-card, .uses, .coin-logo, .facts, .trust";
+  var sel = ".block > .eyebrow, .block > h2, .block > .body, .card, .timeline, .photo-feature, .price-card, .uses, .coin-logo, .facts, .trust";
   var els = document.querySelectorAll(sel);
   var sdt = window.CSS && CSS.supports && CSS.supports("animation-timeline: view()");
   Array.prototype.forEach.call(els, function (el) {

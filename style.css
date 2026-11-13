@@ -214,37 +214,6 @@ html, body { overflow-x: clip; }
 @keyframes unveil { from { clip-path: inset(18% 10% 18% 10% round 28px); } to { clip-path: inset(0 0 0 0 round 20px); } }
 @keyframes settle { from { transform: scale(1.14) translateY(-3%); } to { transform: scale(1.02) translateY(3%); } }
 
-/* Water-loop diagram */
-.diagram { margin: 2.5rem auto 0; max-width: 46rem; padding: clamp(.75rem, 3vw, 1.75rem); border-radius: 22px; border: 1px solid rgba(143, 188, 143, 0.16); background: radial-gradient(ellipse at 50% 40%, rgba(111, 183, 194, 0.08), transparent 70%), linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)); }
-.diagram svg { display: block; width: 100%; height: auto; font-family: inherit; }
-.diagram figcaption { text-align: center; color: var(--muted); font-size: .92rem; margin-top: .75rem; }
-.diagram .node rect { fill: url(#nodeFill); stroke: rgba(143, 188, 143, 0.32); stroke-width: 1.5; }
-.diagram .node.orchard rect { stroke: rgba(200, 180, 110, 0.45); }
-.diagram text { text-anchor: middle; }
-.diagram .t { fill: #eef5ec; font-size: 21px; font-weight: 650; }
-.diagram .s { fill: #9aab96; font-size: 16px; }
-.diagram .lbl { fill: #c8b46e; font-size: 15px; letter-spacing: .06em; }
-.diagram .nd { fill: #eef5ec; font-size: 22px; font-weight: 700; }
-.diagram .ns { fill: #9aab96; font-size: 16px; }
-.diagram .pipe { fill: none; stroke: rgba(111, 183, 194, 0.16); stroke-width: 10; stroke-linecap: round; stroke-linejoin: round; }
-.diagram .pipe.solids { stroke: rgba(200, 180, 110, 0.14); }
-.diagram .flow { fill: none; stroke: #6fb7c2; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 0.5 14; }
-.diagram .flow.solids { stroke: #c8b46e; stroke-dasharray: 0.5 18; }
-.diagram .cycle { transform-box: fill-box; transform-origin: center; }
-@media (prefers-reduced-motion: no-preference) {
-  .diagram .flow { animation: flow 1.1s linear infinite; }
-  .diagram .flow.solids { animation: flow-s 2.4s linear infinite; }
-  .diagram .cycle { animation: spin 9s linear infinite; }
-  .diagram .node rect { animation: node-glow 6s ease-in-out infinite; }
-  .diagram .n2 rect { animation-delay: 1.5s; } .diagram .n3 rect { animation-delay: 3s; } .diagram .n4 rect { animation-delay: 4.5s; }
-  .diagram .orchard rect { animation: none; }
-  .diagram.paused * { animation-play-state: paused !important; }
-}
-@keyframes flow { to { stroke-dashoffset: -29; } }
-@keyframes flow-s { to { stroke-dashoffset: -37; } }
-@keyframes spin { to { transform: rotate(360deg); } }
-@keyframes node-glow { 0%, 70%, 100% { stroke: rgba(143, 188, 143, 0.32); } 15% { stroke: rgba(111, 183, 194, 0.9); } }
-
 /* CDFW badge polish (text unchanged) */
 .trust { position: relative; overflow: hidden; isolation: isolate; background: linear-gradient(160deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)); border-color: rgba(143, 188, 143, 0.28); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 10px 30px -14px rgba(0, 0, 0, 0.6); }
 .trust-mark { background: radial-gradient(circle at 30% 30%, #b9e0c9, var(--accent)); box-shadow: 0 0 0 3px rgba(143, 188, 143, 0.18), 0 0 14px rgba(143, 188, 143, 0.45); }
@@ -275,8 +244,87 @@ html, body { overflow-x: clip; }
   .hero { min-height: auto; padding: 3.5rem 0 4rem; }
   .hero-fx { top: -7rem; }
 }
-@media (max-width: 520px) {
-  .diagram { padding: .5rem; border-radius: 16px; }
-  .diagram .t { font-size: 23px; } .diagram .s { font-size: 18px; }
-  .diagram .nd { font-size: 25px; } .diagram .ns { font-size: 18px; } .diagram .lbl { font-size: 17px; }
+
+/* Photo feature sizing: scale with screen, capped */
+.photo-feature { grid-template-columns: minmax(0, 340px) 1fr; gap: clamp(1.25rem, 4vw, 2.5rem); }
+.photo-frame { width: 100%; max-width: 340px; height: auto; aspect-ratio: 4 / 5; max-height: 60vh; }
+.photo-frame img { width: 100%; height: 100%; max-width: 100%; object-fit: cover; object-position: 45% 55%; }
+@media (max-width: 720px) {
+  .photo-feature { grid-template-columns: 1fr; }
+  .photo-frame { max-width: 100%; aspect-ratio: 4 / 3; max-height: 50vh; margin: 0 auto; }
+}
+
+/* Water-loop diagram (HTML/CSS, visible without any animation) */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.diagram { margin: 2.5rem auto 0; max-width: 54rem; padding: clamp(1rem, 3vw, 2rem); border-radius: 22px; border: 1px solid rgba(143, 188, 143, 0.16); background: radial-gradient(ellipse at 40% 40%, rgba(111, 183, 194, 0.08), transparent 70%), linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)); opacity: 1; }
+.diagram figcaption { text-align: center; color: var(--muted); font-size: .92rem; margin-top: 1.25rem; }
+.loop {
+  --pipe: #6fb7c2; --gold: #c8b46e;
+  display: grid; align-items: center; justify-items: stretch;
+  grid-template-columns: minmax(0, 1fr) 3rem minmax(0, 1fr) 3.5rem minmax(0, 1fr);
+  grid-template-rows: auto 3.25rem auto;
+  grid-template-areas: "a pab b pbo o" "pda cyc pbc . note" "d pcd c . note";
+}
+.loop .node { position: relative; display: flex; flex-direction: column; gap: .2rem; justify-content: center; text-align: center; min-height: 5.25rem; padding: .8rem .7rem; border-radius: 16px; background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.015)); border: 1.5px solid rgba(143, 188, 143, 0.32); overflow-wrap: anywhere; }
+.loop .node b { color: #eef5ec; font-size: 1.02rem; font-weight: 650; line-height: 1.25; }
+.loop .node span { color: var(--muted); font-size: .86rem; line-height: 1.3; }
+.n-a { grid-area: a; } .n-b { grid-area: b; } .n-c { grid-area: c; } .n-d { grid-area: d; }
+.n-o { grid-area: o; border-color: rgba(200, 180, 110, 0.5) !important; }
+.note { grid-area: note; align-self: center; text-align: center; display: flex; flex-direction: column; gap: .15rem; padding: .5rem; }
+.note b { color: #eef5ec; font-size: 1.15rem; }
+.note span { color: var(--muted); font-size: .9rem; }
+.cyc { grid-area: cyc; justify-self: center; display: inline-flex; }
+.cyc svg { display: block; }
+.p-ab { grid-area: pab; } .p-bo { grid-area: pbo; } .p-bc { grid-area: pbc; } .p-cd { grid-area: pcd; } .p-da { grid-area: pda; }
+.loop .p-ab2, .loop .p-cd2, .loop .ret { display: none; }
+
+/* pipes: dotted line + chevron arrowhead */
+.pipe { position: relative; display: block; --c: var(--pipe); --dot: radial-gradient(circle, var(--c) 0 1.6px, transparent 2.2px); }
+.pipe.gold { --c: var(--gold); }
+.pipe.h { height: 10px; margin: 0 .35rem; border-radius: 5px; background: var(--dot) 0 50% / 12px 10px repeat-x, rgba(111, 183, 194, 0.12); }
+.pipe.v { width: 10px; justify-self: center; align-self: stretch; margin: .35rem 0; border-radius: 5px; background: var(--dot) 50% 0 / 10px 12px repeat-y, rgba(111, 183, 194, 0.12); }
+.pipe.gold.h { background-color: rgba(200, 180, 110, 0.12); }
+.pipe::after { content: ""; position: absolute; width: 9px; height: 9px; border: solid var(--c); border-width: 2.5px 2.5px 0 0; }
+.pipe.r::after { right: -3px; top: 50%; margin-top: -4.5px; transform: rotate(45deg); }
+.pipe.l::after { left: -3px; top: 50%; margin-top: -4.5px; transform: rotate(-135deg); }
+.pipe.d::after { bottom: -3px; left: 50%; margin-left: -4.5px; transform: rotate(135deg); }
+.pipe.u::after { top: -3px; left: 50%; margin-left: -4.5px; transform: rotate(-45deg); }
+.pipe i { position: absolute; left: 50%; bottom: 100%; transform: translateX(-50%); margin-bottom: .25rem; font-style: normal; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
+.ret { grid-area: ret; align-items: center; gap: .6rem; }
+.ret .pipe { flex: 1; margin: 0; }
+.ret em { font-style: normal; color: var(--muted); font-size: .88rem; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .pipe.h.r { animation: flow-r 1s linear infinite; }
+  .pipe.h.l { animation: flow-l 1s linear infinite; }
+  .pipe.v.d { animation: flow-d 1s linear infinite; }
+  .pipe.v.u { animation: flow-u 1s linear infinite; }
+  .pipe.gold { animation-duration: 2s; }
+  .cyc { animation: spin 10s linear infinite; }
+  .loop .n-a, .loop .n-b, .loop .n-c, .loop .n-d { animation: node-glow 6s ease-in-out infinite; }
+  .loop .n-b { animation-delay: 1.5s; } .loop .n-c { animation-delay: 3s; } .loop .n-d { animation-delay: 4.5s; }
+  .diagram.paused * { animation-play-state: paused !important; }
+}
+@keyframes flow-r { from { background-position: 0 50%, 0 0; } to { background-position: 12px 50%, 0 0; } }
+@keyframes flow-l { from { background-position: 0 50%, 0 0; } to { background-position: -12px 50%, 0 0; } }
+@keyframes flow-d { from { background-position: 50% 0, 0 0; } to { background-position: 50% 12px, 0 0; } }
+@keyframes flow-u { from { background-position: 50% 0, 0 0; } to { background-position: 50% -12px, 0 0; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes node-glow { 0%, 70%, 100% { border-color: rgba(143, 188, 143, 0.32); box-shadow: none; } 15% { border-color: rgba(111, 183, 194, 0.9); box-shadow: 0 0 22px -6px rgba(111, 183, 194, 0.6); } }
+
+/* Phones: vertical flow, solids branch to the side */
+@media (max-width: 720px) {
+  .loop {
+    grid-template-columns: minmax(0, 1.15fr) 2.25rem minmax(0, 1fr);
+    grid-template-rows: auto 2.25rem auto 2.25rem auto 2.25rem auto auto;
+    grid-template-areas: "a . ." "pab2 . ." "b pbo o" "pbc . note" "c . note" "pcd2 . note" "d . ." "ret ret ret";
+  }
+  .loop .p-ab, .loop .p-cd, .loop .p-da, .loop .cyc { display: none; }
+  .loop .p-ab2 { display: block; grid-area: pab2; } .loop .p-cd2 { display: block; grid-area: pcd2; }
+  .loop .ret { display: flex; margin-top: 1rem; }
+  .p-bo { margin: 0 .2rem; }
+  .p-bo i { display: none; }
+  .loop .node { min-height: 4.5rem; padding: .65rem .55rem; }
+  .loop .node b { font-size: .95rem; }
+  .loop .node span { font-size: .8rem; }
 }
