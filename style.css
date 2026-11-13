@@ -89,3 +89,4 @@ footer p { margin: 0.25rem 0; }
 .uses ul { margin: 0.75rem 0; padding-left: 1.2rem; color: var(--muted); }
 .uses li { margin: 0.45rem 0; }
 .uses strong { color: var(--fg); }
+.cards.four { grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
