@@ -105,7 +105,7 @@ nav a[aria-current="page"] { color: var(--fg); }
 @media (max-width: 640px) { .trust { border-radius: 14px; font-size: 0.85rem; } }
 
 /* ==========================================================
-   Visual layer — water hero, reveals, glass, diagrams
+   Visual layer — water hero, reveals, glass
    ========================================================== */
 @property --ang { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
 html, body { overflow-x: clip; }
@@ -252,79 +252,4 @@ html, body { overflow-x: clip; }
 @media (max-width: 720px) {
   .photo-feature { grid-template-columns: 1fr; }
   .photo-frame { max-width: 100%; aspect-ratio: 4 / 3; max-height: 50vh; margin: 0 auto; }
-}
-
-/* Water-loop diagram (HTML/CSS, visible without any animation) */
-.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
-.diagram { margin: 2.5rem auto 0; max-width: 54rem; padding: clamp(1rem, 3vw, 2rem); border-radius: 22px; border: 1px solid rgba(143, 188, 143, 0.16); background: radial-gradient(ellipse at 40% 40%, rgba(111, 183, 194, 0.08), transparent 70%), linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)); opacity: 1; }
-.diagram figcaption { text-align: center; color: var(--muted); font-size: .92rem; margin-top: 1.25rem; }
-.loop {
-  --pipe: #6fb7c2; --gold: #c8b46e;
-  display: grid; align-items: center; justify-items: stretch;
-  grid-template-columns: minmax(0, 1fr) 3rem minmax(0, 1fr) 3.5rem minmax(0, 1fr);
-  grid-template-rows: auto 3.25rem auto;
-  grid-template-areas: "a pab b pbo o" "pda cyc pbc . note" "d pcd c . note";
-}
-.loop .node { position: relative; display: flex; flex-direction: column; gap: .2rem; justify-content: center; text-align: center; min-height: 5.25rem; padding: .8rem .7rem; border-radius: 16px; background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.015)); border: 1.5px solid rgba(143, 188, 143, 0.32); overflow-wrap: anywhere; }
-.loop .node b { color: #eef5ec; font-size: 1.02rem; font-weight: 650; line-height: 1.25; }
-.loop .node span { color: var(--muted); font-size: .86rem; line-height: 1.3; }
-.n-a { grid-area: a; } .n-b { grid-area: b; } .n-c { grid-area: c; } .n-d { grid-area: d; }
-.n-o { grid-area: o; border-color: rgba(200, 180, 110, 0.5) !important; }
-.note { grid-area: note; align-self: center; text-align: center; display: flex; flex-direction: column; gap: .15rem; padding: .5rem; }
-.note b { color: #eef5ec; font-size: 1.15rem; }
-.note span { color: var(--muted); font-size: .9rem; }
-.cyc { grid-area: cyc; justify-self: center; display: inline-flex; }
-.cyc svg { display: block; }
-.p-ab { grid-area: pab; } .p-bo { grid-area: pbo; } .p-bc { grid-area: pbc; } .p-cd { grid-area: pcd; } .p-da { grid-area: pda; }
-.loop .p-ab2, .loop .p-cd2, .loop .ret { display: none; }
-
-/* pipes: dotted line + chevron arrowhead */
-.pipe { position: relative; display: block; --c: var(--pipe); --dot: radial-gradient(circle, var(--c) 0 1.6px, transparent 2.2px); }
-.pipe.gold { --c: var(--gold); }
-.pipe.h { height: 10px; margin: 0 .35rem; border-radius: 5px; background: var(--dot) 0 50% / 12px 10px repeat-x, rgba(111, 183, 194, 0.12); }
-.pipe.v { width: 10px; justify-self: center; align-self: stretch; margin: .35rem 0; border-radius: 5px; background: var(--dot) 50% 0 / 10px 12px repeat-y, rgba(111, 183, 194, 0.12); }
-.pipe.gold.h { background-color: rgba(200, 180, 110, 0.12); }
-.pipe::after { content: ""; position: absolute; width: 9px; height: 9px; border: solid var(--c); border-width: 2.5px 2.5px 0 0; }
-.pipe.r::after { right: -3px; top: 50%; margin-top: -4.5px; transform: rotate(45deg); }
-.pipe.l::after { left: -3px; top: 50%; margin-top: -4.5px; transform: rotate(-135deg); }
-.pipe.d::after { bottom: -3px; left: 50%; margin-left: -4.5px; transform: rotate(135deg); }
-.pipe.u::after { top: -3px; left: 50%; margin-left: -4.5px; transform: rotate(-45deg); }
-.pipe i { position: absolute; left: 50%; bottom: 100%; transform: translateX(-50%); margin-bottom: .25rem; font-style: normal; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
-.ret { grid-area: ret; align-items: center; gap: .6rem; }
-.ret .pipe { flex: 1; margin: 0; }
-.ret em { font-style: normal; color: var(--muted); font-size: .88rem; }
-
-@media (prefers-reduced-motion: no-preference) {
-  .pipe.h.r { animation: flow-r 1s linear infinite; }
-  .pipe.h.l { animation: flow-l 1s linear infinite; }
-  .pipe.v.d { animation: flow-d 1s linear infinite; }
-  .pipe.v.u { animation: flow-u 1s linear infinite; }
-  .pipe.gold { animation-duration: 2s; }
-  .cyc { animation: spin 10s linear infinite; }
-  .loop .n-a, .loop .n-b, .loop .n-c, .loop .n-d { animation: node-glow 6s ease-in-out infinite; }
-  .loop .n-b { animation-delay: 1.5s; } .loop .n-c { animation-delay: 3s; } .loop .n-d { animation-delay: 4.5s; }
-  .diagram.paused * { animation-play-state: paused !important; }
-}
-@keyframes flow-r { from { background-position: 0 50%, 0 0; } to { background-position: 12px 50%, 0 0; } }
-@keyframes flow-l { from { background-position: 0 50%, 0 0; } to { background-position: -12px 50%, 0 0; } }
-@keyframes flow-d { from { background-position: 50% 0, 0 0; } to { background-position: 50% 12px, 0 0; } }
-@keyframes flow-u { from { background-position: 50% 0, 0 0; } to { background-position: 50% -12px, 0 0; } }
-@keyframes spin { to { transform: rotate(360deg); } }
-@keyframes node-glow { 0%, 70%, 100% { border-color: rgba(143, 188, 143, 0.32); box-shadow: none; } 15% { border-color: rgba(111, 183, 194, 0.9); box-shadow: 0 0 22px -6px rgba(111, 183, 194, 0.6); } }
-
-/* Phones: vertical flow, solids branch to the side */
-@media (max-width: 720px) {
-  .loop {
-    grid-template-columns: minmax(0, 1.15fr) 2.25rem minmax(0, 1fr);
-    grid-template-rows: auto 2.25rem auto 2.25rem auto 2.25rem auto auto;
-    grid-template-areas: "a . ." "pab2 . ." "b pbo o" "pbc . note" "c . note" "pcd2 . note" "d . ." "ret ret ret";
-  }
-  .loop .p-ab, .loop .p-cd, .loop .p-da, .loop .cyc { display: none; }
-  .loop .p-ab2 { display: block; grid-area: pab2; } .loop .p-cd2 { display: block; grid-area: pcd2; }
-  .loop .ret { display: flex; margin-top: 1rem; }
-  .p-bo { margin: 0 .2rem; }
-  .p-bo i { display: none; }
-  .loop .node { min-height: 4.5rem; padding: .65rem .55rem; }
-  .loop .node b { font-size: .95rem; }
-  .loop .node span { font-size: .8rem; }
 }

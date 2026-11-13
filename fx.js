@@ -164,7 +164,7 @@
 
   /* ---------- 4. Pause SVG animations when off-screen ---------- */
   if ("IntersectionObserver" in window) {
-    var anim = document.querySelectorAll(".diagram, .shrimp-mark");
+    var anim = document.querySelectorAll(".shrimp-mark");
     var po = new IntersectionObserver(function (es) {
       es.forEach(function (e) { e.target.classList.toggle("paused", !e.isIntersecting); });
     });
