@@ -98,3 +98,8 @@ nav a[aria-current="page"] { color: var(--fg); }
 .price .unit { color: var(--muted); font-size: 1.15rem; }
 .price-sub { margin: 0.4rem 0 0; color: var(--accent); font-weight: 600; }
 @media (max-width: 640px) { .price-card { padding: 1.35rem; } }
+.trust { display: flex; align-items: center; justify-content: center; gap: 0.6rem; flex-wrap: wrap; margin: 0 auto 3rem; width: fit-content; max-width: 100%; padding: 0.6rem 1.1rem; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--muted); font-size: 0.9rem; text-align: center; }
+.trust strong { color: var(--fg); font-weight: 600; }
+.trust-mark { display: inline-grid; place-items: center; width: 1.4rem; height: 1.4rem; border-radius: 50%; background: var(--accent); color: var(--bg); font-size: 0.8rem; font-weight: 700; flex: none; }
+.trust-inline { margin: 1.75rem auto 0; }
+@media (max-width: 640px) { .trust { border-radius: 14px; font-size: 0.85rem; } }
