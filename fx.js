@@ -116,7 +116,12 @@
     document.addEventListener("visibilitychange", kick);
     var onReduce = function () { if (reduce.matches) draw(14); kick(); };
     if (reduce.addEventListener) reduce.addEventListener("change", onReduce);
-    window.addEventListener("resize", function () { resize(); if (!running()) draw(14); }, { passive: true });
+    var onSize = function () { resize(); if (!running()) draw(reduce.matches ? 14 : (performance.now() - start) / 1000); };
+    window.addEventListener("resize", onSize, { passive: true });
+    window.addEventListener("orientationchange", function () { setTimeout(onSize, 250); });
+    window.addEventListener("load", onSize);
+    if ("ResizeObserver" in window) new ResizeObserver(onSize).observe(canvas);
+    requestAnimationFrame(onSize);
     canvas.parentNode.parentNode.addEventListener("pointermove", function (e) {
       var r = canvas.getBoundingClientRect();
       target[0] = (e.clientX - r.left) / r.width;
