@@ -83,3 +83,9 @@ footer p { margin: 0.25rem 0; }
   .coin-logo { width: 120px; height: 120px; }
   .facts div { grid-template-columns: 1fr; gap: 0.1rem; }
 }
+.uses { margin-top: 2rem; padding: 1.35rem; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; }
+.uses h3 { margin-bottom: 0.4rem; }
+.uses .body { margin: 0.4rem 0; font-size: 1rem; }
+.uses ul { margin: 0.75rem 0; padding-left: 1.2rem; color: var(--muted); }
+.uses li { margin: 0.45rem 0; }
+.uses strong { color: var(--fg); }
