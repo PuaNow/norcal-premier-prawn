@@ -21,6 +21,7 @@
   <meta name="twitter:description" content="Fresh RAS-raised Pacific whiteleg shrimp from Mendocino County, California." />
   <meta name="twitter:image" content="https://raw.githubusercontent.com/PuaNow/shrimpcoin-metadata/main/shrimpcoin-logo.png" />
   <link rel="stylesheet" href="style.css" />
+  <script src="fx.js" defer></script>
 </head>
 <body>
   <header class="topbar">
@@ -38,6 +39,20 @@
 
   <main id="top">
     <section class="hero">
+      <div class="hero-fx" aria-hidden="true"><canvas id="water"></canvas></div>
+      <div class="hero-inner">
+      <svg class="shrimp-mark" viewBox="52 0 162 136" width="132" height="111" aria-hidden="true" focusable="false">
+        <defs><linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b9e0c9"/><stop offset=".55" stop-color="#8fbc8f"/><stop offset="1" stop-color="#6fb7c2"/></linearGradient></defs>
+        <g fill="none" stroke="url(#sg)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path class="d d1" pathLength="1" d="M90.3 30.2 L96.3 28.3 L102.5 27.0 L108.7 26.4 L115.0 26.5 L121.2 27.3 L127.3 28.8 L133.2 30.9 L138.7 33.7 L144.0 37.1 L148.7 41.0 L153.0 45.4 L156.8 50.2 L160.0 55.4 L162.6 60.9 L164.5 66.7 L165.8 72.6 L166.4 78.5 L166.4 84.5 L165.7 90.4 L164.4 96.1 L162.4 101.6 L159.9 106.8 L156.8 111.8 L153.3 116.3 L149.3 120.3 L144.9 123.9 L140.2 127.0 L135.2 129.5 L130.0 131.4 L124.6 132.8 L119.2 133.5 L113.7 133.7 L108.3 133.2 L103.1 132.2 L98.0 130.6 L93.1 128.5 L88.5 125.9 L84.3 122.8 L80.5 119.3 L77.1 115.4 L84.5 108.8 L87.6 111.4 L90.9 113.6 L94.4 115.4 L98.1 116.8 L101.8 117.8 L105.6 118.4 L109.4 118.5 L113.2 118.3 L116.9 117.6 L120.4 116.6 L123.8 115.1 L127.0 113.4 L129.9 111.3 L132.5 108.9 L134.9 106.3 L136.9 103.5 L138.6 100.5 L139.9 97.3 L140.9 94.1 L141.5 90.8 L141.7 87.5 L141.6 84.3 L141.1 81.1 L140.3 78.0 L139.2 75.0 L137.8 72.2 L136.2 69.6 L134.3 67.2 L132.1 65.1 L129.8 63.1 L127.3 61.5 L124.7 60.1 L121.9 59.1 L119.1 58.3 L116.3 57.8 L113.4 57.6 L110.5 57.8 L107.7 58.2 L104.9 58.9 L102.3 59.9 Q88.7 46.7 90.3 30.2 Z"/>
+          <path class="d d2" pathLength="1" d="M102.0 27.0 Q84.1 29.7 62.1 30.7 Q82.1 36.7 95.1 42.1"/>
+          <path class="d d3" pathLength="1" stroke-opacity=".7" d="M129.7 29.6 Q122.1 40.1 122.4 52.0 M151.2 43.4 Q140.3 49.1 135.7 59.5 M164.1 65.1 Q152.5 65.1 144.5 72.2 M165.8 89.7 Q156.4 84.8 147.1 87.7 M156.7 111.9 Q151.3 104.0 142.6 103.1 M139.2 127.5 Q138.4 119.0 131.5 115.3 M117.2 133.6 Q120.3 126.8 115.9 121.4 M95.4 129.6 Q100.8 125.8 98.9 120.1 M99.0 38.8 Q109.0 40.5 117.0 48.5"/>
+          <path class="d d4" pathLength="1" stroke-opacity=".7" d="M104.9 55.6 q-1 8 -6 14 M111.0 54.6 q-1 8 -6 14 M117.1 54.8 q-1 8 -6 14 M123.2 56.3 q-1 8 -6 14 M126.4 61.0 L124.9 68.6 M135.8 69.1 L131.3 75.4 M141.1 80.9 L134.3 84.8 M140.8 94.5 L132.9 95.1 M134.3 107.0 L126.7 104.3 M122.3 115.8 L116.6 110.0 M107.2 118.5 L104.3 110.8"/>
+          <path class="d d5" pathLength="1" d="M80.1 107.1 Q62.8 101.6 61.4 107.4 Q59.9 113.2 77.9 116.2 M82.1 107.3 Q65.1 93.0 61.5 97.8 Q57.9 102.6 76.6 114.8 M83.9 108.2 Q73.8 88.4 68.6 91.4 Q63.4 94.5 75.9 112.9 M85.2 109.7 Q84.1 91.5 78.1 92.3 Q72.2 93.1 75.9 110.9"/>
+          <g class="antennae"><path class="d d6" pathLength="1" stroke="#6fb7c2" d="M92.3 41.1 C62.3 39.1 66.3 -2.9 204.0 10.0"/><path class="d d7" pathLength="1" stroke="#6fb7c2" stroke-opacity=".8" d="M92.3 45.1 C52.3 49.1 52.3 -16.9 212.0 34.0"/></g>
+        </g>
+        <circle class="eye" cx="99.1" cy="39.0" r="2.3" fill="#e8efe6"/>
+      </svg>
       <p class="eyebrow">Mendocino County, California</p>
       <h1>Fresh Pacific whiteleg shrimp, raised on an olive orchard.</h1>
       <p class="lede">NorCal Premier Prawn grows shrimp in a recirculating aquaculture system near Ukiah, for chefs who want local seafood harvested days, not weeks, before it reaches the plate.</p>
@@ -45,10 +60,11 @@
         <a class="pill" href="mailto:paul@farfuturesolutions.com">Contact the farm</a>
         <a class="pill ghost" href="#farm">How we farm</a>
       </p>
+      </div>
     </section>
 
     <aside class="trust" aria-label="Aquaculture registration">
-      <span class="trust-mark" aria-hidden="true">&#10003;</span>
+      <span class="trust-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12"><path pathLength="1" d="M3.5 8.5 L6.8 11.5 L12.5 4.8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       <span><strong>Registered California Aquaculture Facility</strong> · CDFW Registration #2046 · Valid through 12/31/2027</span>
     </aside>
 
@@ -97,6 +113,17 @@
           <p>Harvested to order and delivered locally, so chefs receive shrimp that have never been through an import freezer chain.</p>
         </article>
       </div>
+    <figure class="photo-feature">
+        <div class="photo-frame">
+          <img src="assets/photos/juvenile-shrimp-800.svg" srcset="assets/photos/juvenile-shrimp-480.svg 480w, assets/photos/juvenile-shrimp-800.svg 800w" sizes="(max-width: 720px) 92vw, 420px" width="800" height="1000" loading="lazy" decoding="async" alt="A juvenile Pacific whiteleg shrimp from our nursery, held in a hand net" />
+          <span class="photo-chip">Real photo · Our nursery</span>
+        </div>
+        <figcaption>
+          <p class="eyebrow">From our tanks</p>
+          <h3>A juvenile whiteleg, up close.</h3>
+          <p>A real photo from our nursery: one of our young Pacific whiteleg shrimp, lifted from the tank in a hand net. Every shrimp we sell starts here, in clean, closely monitored water in Mendocino County.</p>
+        </figcaption>
+      </figure>
     </section>
 
     <section id="sustainability" class="block">
@@ -120,6 +147,49 @@
           <p>We track water quality on-site, including dissolved oxygen and temperature, so problems are caught early and the shrimp stay in healthy conditions.</p>
         </article>
       </div>
+    <figure class="diagram">
+        <svg viewBox="0 0 680 600" role="img" aria-labelledby="loop-title loop-desc">
+          <title id="loop-title">The farm&rsquo;s closed water loop</title>
+          <desc id="loop-desc">Water flows from the production tank to a bottom-up net filter, then to a moving-bed tank, then through a lava rock bed, and back to the production tank. Solids captured by the filter go to the olive orchard as fertilizer. No discharge to creeks, rivers, or the ocean.</desc>
+          <defs>
+            <linearGradient id="nodeFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".07"/><stop offset="1" stop-color="#ffffff" stop-opacity=".015"/></linearGradient>
+            <marker id="arW" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L8 5 L1 9" fill="none" stroke="#6fb7c2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+            <marker id="arS" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L8 5 L1 9" fill="none" stroke="#c8b46e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+          </defs>
+          <g class="pipes">
+            <path class="pipe" d="M282 95 H352"/>
+            <path class="pipe" d="M480 152 V282"/>
+            <path class="pipe" d="M358 345 H288"/>
+            <path class="pipe" d="M160 288 V158"/>
+            <path class="pipe solids" d="M602 95 H622 Q634 95 634 107 V508 Q634 520 622 520 H448"/>
+          </g>
+          <g class="flows">
+            <path class="flow" d="M282 95 H352" marker-end="url(#arW)"/>
+            <path class="flow" d="M480 152 V282" marker-end="url(#arW)"/>
+            <path class="flow" d="M358 345 H288" marker-end="url(#arW)"/>
+            <path class="flow" d="M160 288 V158" marker-end="url(#arW)"/>
+            <path class="flow solids" d="M602 95 H622 Q634 95 634 107 V508 Q634 520 622 520 H448" marker-end="url(#arS)"/>
+          </g>
+          <g class="nodes">
+            <g class="node n1"><rect x="40" y="40" width="240" height="110" rx="18"/><text class="t" x="160" y="88">Production tank</text><text class="s" x="160" y="116">Where the shrimp grow</text></g>
+            <g class="node n2"><rect x="360" y="40" width="240" height="110" rx="18"/><text class="t" x="480" y="88">Bottom-up net filter</text><text class="s" x="480" y="116">Captures solids</text></g>
+            <g class="node n3"><rect x="360" y="290" width="240" height="110" rx="18"/><text class="t" x="480" y="338">Moving-bed tank</text><text class="s" x="480" y="366">Moving-bed bioreactor</text></g>
+            <g class="node n4"><rect x="40" y="290" width="240" height="110" rx="18"/><text class="t" x="160" y="338">Lava rock bed</text><text class="s" x="160" y="366">Lava-rock biofiltration</text></g>
+            <g class="node orchard"><rect x="200" y="468" width="240" height="104" rx="18"/><text class="t" x="320" y="512">Olive orchard</text><text class="s" x="320" y="540">Solids become fertilizer</text></g>
+          </g>
+          <text class="lbl" x="0" y="0" transform="translate(656 300) rotate(90)">Captured solids</text>
+          <g class="center">
+            <g transform="translate(320 180)"><g class="cycle">
+              <path d="M-15 -6 A16 16 0 0 1 13 -9" fill="none" stroke="#6fb7c2" stroke-width="2" stroke-linecap="round" marker-end="url(#arW)"/>
+              <path d="M15 6 A16 16 0 0 1 -13 9" fill="none" stroke="#6fb7c2" stroke-width="2" stroke-linecap="round" marker-end="url(#arW)"/>
+            </g></g>
+            <text class="nd" x="320" y="226">No discharge</text>
+            <text class="ns" x="320" y="250">to creeks, rivers,</text>
+            <text class="ns" x="320" y="270">or the ocean</text>
+          </g>
+        </svg>
+        <figcaption>Water is filtered and reused in a closed loop. Captured solids go to the olive orchard instead of a waterway.</figcaption>
+      </figure>
     </section>
 
     <section id="restaurants" class="block">

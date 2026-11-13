@@ -16,6 +16,7 @@
   <meta property="og:image" content="https://raw.githubusercontent.com/PuaNow/shrimpcoin-metadata/main/shrimpcoin-logo.png" />
   <meta name="twitter:card" content="summary" />
   <link rel="stylesheet" href="../style.css" />
+  <script src="../fx.js" defer></script>
 </head>
 <body>
   <header class="topbar">
@@ -32,11 +33,14 @@
   </header>
 
   <main>
-    <section class="hero">
+    <section class="hero hero-short">
+      <div class="hero-fx" aria-hidden="true"><canvas id="water"></canvas></div>
+      <div class="hero-inner">
       <p class="eyebrow">Restaurant &amp; wholesale pricing</p>
       <h1>Fresh whole shrimp, harvested to order.</h1>
       <p class="lede">Pacific whiteleg shrimp (<em>Litopenaeus vannamei</em>) raised in our Mendocino County RAS farm and delivered fresh to restaurants across the North Coast and wine country.</p>
-      <p class="trust trust-inline"><span class="trust-mark" aria-hidden="true">&#10003;</span><span><strong>Registered California Aquaculture Facility</strong> · CDFW Registration #2046 · Valid through 12/31/2027</span></p>
+      <p class="trust trust-inline"><span class="trust-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12"><path pathLength="1" d="M3.5 8.5 L6.8 11.5 L12.5 4.8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><strong>Registered California Aquaculture Facility</strong> · CDFW Registration #2046 · Valid through 12/31/2027</span></p>
+      </div>
     </section>
 
     <section class="block price-wrap">
