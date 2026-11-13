@@ -115,7 +115,7 @@
       </div>
     <figure class="photo-feature">
         <div class="photo-frame">
-          <img src="assets/photos/juvenile-shrimp-800.svg" srcset="assets/photos/juvenile-shrimp-480.svg 480w, assets/photos/juvenile-shrimp-800.svg 800w" sizes="(max-width: 720px) 92vw, 420px" width="800" height="1000" loading="lazy" decoding="async" alt="A juvenile Pacific whiteleg shrimp from our nursery, held in a hand net" />
+          <img src="assets/photos/juvenile-shrimp-800.svg" srcset="assets/photos/juvenile-shrimp-480.svg 480w, assets/photos/juvenile-shrimp-800.svg 800w" sizes="(max-width: 720px) 92vw, 340px" width="800" height="1000" loading="lazy" decoding="async" alt="A juvenile Pacific whiteleg shrimp from our nursery, held in a hand net" />
           <span class="photo-chip">Real photo · Our nursery</span>
         </div>
         <figcaption>
@@ -148,46 +148,24 @@
         </article>
       </div>
     <figure class="diagram">
-        <svg viewBox="0 0 680 600" role="img" aria-labelledby="loop-title loop-desc">
-          <title id="loop-title">The farm&rsquo;s closed water loop</title>
-          <desc id="loop-desc">Water flows from the production tank to a bottom-up net filter, then to a moving-bed tank, then through a lava rock bed, and back to the production tank. Solids captured by the filter go to the olive orchard as fertilizer. No discharge to creeks, rivers, or the ocean.</desc>
-          <defs>
-            <linearGradient id="nodeFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".07"/><stop offset="1" stop-color="#ffffff" stop-opacity=".015"/></linearGradient>
-            <marker id="arW" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L8 5 L1 9" fill="none" stroke="#6fb7c2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
-            <marker id="arS" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L8 5 L1 9" fill="none" stroke="#c8b46e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
-          </defs>
-          <g class="pipes">
-            <path class="pipe" d="M282 95 H352"/>
-            <path class="pipe" d="M480 152 V282"/>
-            <path class="pipe" d="M358 345 H288"/>
-            <path class="pipe" d="M160 288 V158"/>
-            <path class="pipe solids" d="M602 95 H622 Q634 95 634 107 V508 Q634 520 622 520 H448"/>
-          </g>
-          <g class="flows">
-            <path class="flow" d="M282 95 H352" marker-end="url(#arW)"/>
-            <path class="flow" d="M480 152 V282" marker-end="url(#arW)"/>
-            <path class="flow" d="M358 345 H288" marker-end="url(#arW)"/>
-            <path class="flow" d="M160 288 V158" marker-end="url(#arW)"/>
-            <path class="flow solids" d="M602 95 H622 Q634 95 634 107 V508 Q634 520 622 520 H448" marker-end="url(#arS)"/>
-          </g>
-          <g class="nodes">
-            <g class="node n1"><rect x="40" y="40" width="240" height="110" rx="18"/><text class="t" x="160" y="88">Production tank</text><text class="s" x="160" y="116">Where the shrimp grow</text></g>
-            <g class="node n2"><rect x="360" y="40" width="240" height="110" rx="18"/><text class="t" x="480" y="88">Bottom-up net filter</text><text class="s" x="480" y="116">Captures solids</text></g>
-            <g class="node n3"><rect x="360" y="290" width="240" height="110" rx="18"/><text class="t" x="480" y="338">Moving-bed tank</text><text class="s" x="480" y="366">Moving-bed bioreactor</text></g>
-            <g class="node n4"><rect x="40" y="290" width="240" height="110" rx="18"/><text class="t" x="160" y="338">Lava rock bed</text><text class="s" x="160" y="366">Lava-rock biofiltration</text></g>
-            <g class="node orchard"><rect x="200" y="468" width="240" height="104" rx="18"/><text class="t" x="320" y="512">Olive orchard</text><text class="s" x="320" y="540">Solids become fertilizer</text></g>
-          </g>
-          <text class="lbl" x="0" y="0" transform="translate(656 300) rotate(90)">Captured solids</text>
-          <g class="center">
-            <g transform="translate(320 180)"><g class="cycle">
-              <path d="M-15 -6 A16 16 0 0 1 13 -9" fill="none" stroke="#6fb7c2" stroke-width="2" stroke-linecap="round" marker-end="url(#arW)"/>
-              <path d="M15 6 A16 16 0 0 1 -13 9" fill="none" stroke="#6fb7c2" stroke-width="2" stroke-linecap="round" marker-end="url(#arW)"/>
-            </g></g>
-            <text class="nd" x="320" y="226">No discharge</text>
-            <text class="ns" x="320" y="250">to creeks, rivers,</text>
-            <text class="ns" x="320" y="270">or the ocean</text>
-          </g>
-        </svg>
+        <p class="sr-only">How water moves through the farm: water flows from the production tank to a bottom-up net filter, then to a moving-bed tank, then through a lava rock bed, and back to the production tank. Solids captured by the filter go to the olive orchard as fertilizer. No discharge to creeks, rivers, or the ocean.</p>
+        <div class="loop" aria-hidden="true">
+          <div class="node n-a"><b>Production tank</b><span>Where the shrimp grow</span></div>
+          <span class="pipe h r p-ab"></span>
+          <div class="node n-b"><b>Bottom-up net filter</b><span>Captures solids</span></div>
+          <span class="pipe h r gold p-bo"><i>Solids</i></span>
+          <div class="node n-o"><b>Olive orchard</b><span>Solids become fertilizer</span></div>
+          <span class="pipe v u p-da"></span>
+          <span class="cyc"><svg viewBox="0 0 40 40" width="34" height="34"><path d="M8 17a12 12 0 0 1 21-6" fill="none" stroke="#6fb7c2" stroke-width="2.5" stroke-linecap="round"/><path d="M26 6l3.5 5-6 1" fill="none" stroke="#6fb7c2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 23a12 12 0 0 1-21 6" fill="none" stroke="#6fb7c2" stroke-width="2.5" stroke-linecap="round"/><path d="M14 34l-3.5-5 6-1" fill="none" stroke="#6fb7c2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="pipe v d p-bc"></span>
+          <div class="note"><b>No discharge</b><span>to creeks, rivers, or the ocean</span></div>
+          <div class="node n-d"><b>Lava rock bed</b><span>Lava-rock biofiltration</span></div>
+          <span class="pipe h l p-cd"></span>
+          <div class="node n-c"><b>Moving-bed tank</b><span>Moving-bed bioreactor</span></div>
+          <span class="pipe v d p-cd2"></span>
+          <span class="pipe v d p-ab2"></span>
+          <div class="ret"><span class="pipe h l"></span><em>Back to the production tank</em></div>
+        </div>
         <figcaption>Water is filtered and reused in a closed loop. Captured solids go to the olive orchard instead of a waterway.</figcaption>
       </figure>
     </section>
