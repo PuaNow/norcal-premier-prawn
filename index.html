@@ -28,14 +28,16 @@
   <meta name="twitter:title" content="NorCal Premier Prawn" />
   <meta name="twitter:description" content="Fresh RAS-raised Pacific whiteleg shrimp from Mendocino County, California." />
   <meta name="twitter:image" content="https://raw.githubusercontent.com/PuaNow/shrimpcoin-metadata/main/shrimpcoin-logo.png" />
-  <link rel="stylesheet" href="style.css?v=20261113g" />
-  <script src="fx.js?v=20261113g" defer></script>
+  <link rel="stylesheet" href="style.css?v=20261114h" />
+  <script src="fx.js?v=20261114h" defer></script>
+  <script src="farmstats.js?v=20261114h" defer></script>
 </head>
 <body>
   <header class="topbar">
     <a class="brand" href="#top"><img src="favicon.svg" alt="" width="28" height="28" /> NorCal Premier Prawn</a>
     <nav>
       <a href="#farm">Farm</a>
+      <a href="#farmstats">Stats</a>
       <a href="#shrimp">Shrimp</a>
       <a href="#sustainability">Sustainability</a>
       <a href="#restaurants">Restaurants</a>
@@ -95,6 +97,21 @@
           <h3>State-registered facility</h3>
           <p>Our farm is registered with the California Department of Fish and Wildlife as an aquaculture facility that rears invertebrates for sale. Registrant: Far Future Solutions LLC, Registration #2046, valid through 12/31/2027. <a href="https://wildlife.ca.gov/Conservation/Aquaculture" target="_blank" rel="noopener">About California aquaculture registration</a>.</p>
         </article>
+      </div>
+    </section>
+
+
+    <section id="farmstats" class="block farmstats">
+      <p class="eyebrow">Farm stats</p>
+      <h2>Live from the nursery.</h2>
+      <p class="body">The nursery sump water level, updated about once a minute.</p>
+      <div class="term" id="farmstats-widget" role="region" aria-label="Nursery sump water level">
+        <div class="term-chrome" aria-hidden="true">
+          <span class="term-dots"><i></i><i></i><i></i></span>
+          <span class="term-title">farmstats</span>
+        </div>
+        <pre class="term-body" id="farmstats-body">paul@norcalprawn:~$ farmstats</pre>
+        <p class="visually-hidden" id="farmstats-live" aria-live="polite">Loading nursery sump water level.</p>
       </div>
     </section>
 
