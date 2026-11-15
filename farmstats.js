@@ -32,7 +32,7 @@
       unit: "in",
       status: "live",
       value: null,
-      target: "2\u20134 in",
+      target: "2\u20135 in",
       feed: { user: "PuaNow", key: "nursery-sump-level" },
       title: "nursery sump water level"
     },
@@ -140,8 +140,8 @@
 
   function statusFor(inches) {
     if (inches < 2) return { key: "below", label: "Below normal", hint: "under 2 in" };
-    if (inches <= 4) return { key: "normal", label: "Normal", hint: "target 2\u20134 in" };
-    if (inches <= 8) return { key: "above", label: "Above normal", hint: "4\u20138 in" };
+    if (inches <= 5) return { key: "normal", label: "Normal", hint: "target 2\u20135 in" };
+    if (inches <= 8) return { key: "above", label: "Above normal", hint: "5\u20138 in" };
     return { key: "alert", label: "ALERT", hint: "over 8 in" };
   }
 
@@ -309,11 +309,11 @@
     if (inches > 0 && pos < 1) pos = 1;
     if (inches > max) pos = cols;
     var mark2 = Math.round((2 / max) * cols);
-    var mark4 = Math.round((4 / max) * cols);
+    var mark5 = Math.round((5 / max) * cols);
     var fills = [];
     var i;
     for (i = 0; i < cols; i++) {
-      var inNormal = i >= mark2 && i < mark4;
+      var inNormal = i >= mark2 && i < mark5;
       var filled = i < pos;
       var cls = "g-cell" + (inNormal ? " g-normal" : "") + (filled ? " g-fill" : "");
       fills.push('<span class="' + cls + '">' + (filled ? "\u2588" : (inNormal ? "\u2591" : "\u00b7")) + "</span>");
@@ -323,14 +323,14 @@
     for (i = 0; i < cols; i++) scaleChars[i] = " ";
     scaleChars[0] = "0";
     scaleChars[cols - 1] = "8";
-    for (i = mark2; i <= mark4; i++) scaleChars[i] = "=";
+    for (i = mark2; i <= mark5; i++) scaleChars[i] = "=";
     scaleChars[mark2] = "2";
-    scaleChars[mark4] = "4";
+    scaleChars[mark5] = "5";
     var scale =
       "    " +
       '<span class="term-scale">' + scaleChars.slice(0, mark2).join("") + "</span>" +
-      '<span class="term-band">' + scaleChars.slice(mark2, mark4 + 1).join("") + "</span>" +
-      '<span class="term-scale">' + scaleChars.slice(mark4 + 1).join("") + "</span>";
+      '<span class="term-band">' + scaleChars.slice(mark2, mark5 + 1).join("") + "</span>" +
+      '<span class="term-scale">' + scaleChars.slice(mark5 + 1).join("") + "</span>";
     var caretPad = Math.max(0, pos - 1);
     var caret =
       "    " +
