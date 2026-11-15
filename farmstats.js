@@ -49,10 +49,10 @@
     {
       id: "temp",
       label: "temp",
-      unit: "\u00b0C",
+      unit: "\u00b0F",
       status: "target",
       value: null,
-      target: "28.5 \u00b0C (82\u201384 \u00b0F)",
+      target: "82\u201384 \u00b0F",
       feed: null,
       title: "water temperature"
     },
