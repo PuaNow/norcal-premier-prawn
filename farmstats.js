@@ -7,7 +7,7 @@
 (function () {
   "use strict";
 
-  var REFRESH_MS = 60000;
+  var REFRESH_MS = 30000;
   var TZ = "America/Los_Angeles";
   var TIMEOUT_MS = 12000;
 
@@ -540,10 +540,27 @@
       '<span class="term-dim">  STANDBY // FETCHING SUMP LEVEL</span>\n\n' +
       renderTargets();
     live.textContent = "Loading nursery sump water level.";
+    var timer = null;
+    function startTimer() {
+      if (timer) clearInterval(timer);
+      timer = setInterval(tick, REFRESH_MS);
+    }
+    function stopTimer() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
     tick(true);
-    setInterval(tick, REFRESH_MS);
+    if (!document.hidden) startTimer();
     document.addEventListener("visibilitychange", function () {
-      if (!document.hidden) tick();
+      if (document.hidden) {
+        stopTimer();
+      } else {
+        tick();
+        startTimer();
+      }
     });
   }
 
