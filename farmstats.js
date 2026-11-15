@@ -193,21 +193,52 @@
     };
   }
 
-  function promptLine() {
+  var printed = false;
+
+  function prefersReduce() {
+    return window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  function rule() {
+    return "========================================";
+  }
+
+  function statusWord(key) {
+    if (key === "normal") return "NOMINAL";
+    if (key === "below") return "BELOW NOMINAL";
+    if (key === "above") return "ABOVE NOMINAL";
+    if (key === "alert") return "ALERT";
+    return "NO DATA";
+  }
+
+  function headerHtml(stKey) {
     return (
-      '<span class="term-prompt">' +
-        '<span class="term-user">paul</span>' +
-        '<span class="term-at">@</span>' +
-        '<span class="term-host">norcalprawn</span>' +
-        '<span class="term-colon">:</span>' +
-        '<span class="term-path">~</span>' +
-        '<span class="term-dollar">$</span>' +
-      "</span> farmstats"
+      '<span class="term-head">NORCAL PREMIER PRAWN // NURSERY SYSTEMS</span>\n' +
+      '<span class="term-rule">' + rule() + "</span>\n" +
+      '<span class="term-head">INTERFACE READY</span>\n' +
+      '<span class="term-statusline is-' + stKey + '">STATUS :: ' +
+        statusWord(stKey) + "</span>"
     );
   }
 
-  function cursor() {
-    return '<span class="term-cursor" aria-hidden="true"></span>';
+  function setBody(body, html, animate) {
+    if (!animate || printed || prefersReduce()) {
+      body.innerHTML = html;
+      printed = true;
+      return;
+    }
+    printed = true;
+    var parts = html.split("\n");
+    body.innerHTML = "";
+    var i = 0;
+    function step() {
+      if (i >= parts.length) return;
+      body.insertAdjacentHTML("beforeend", (i ? "\n" : "") + parts[i]);
+      i += 1;
+      setTimeout(step, 28);
+    }
+    step();
   }
 
   function kv(label, valueHtml, flagHtml) {
@@ -315,7 +346,10 @@
   function renderTargets() {
     var sawInfo = false;
     var lines = [
-      '<span class="term-comment">  # targets \u2014 live sensors coming soon</span>'
+      '<span class="term-rule">' + rule() + "</span>",
+      '<span class="term-comment">  TARGET PARAMETERS</span>',
+      '<span class="term-comment">  SENSORS PENDING</span>',
+      ""
     ];
     STATS.forEach(function (stat) {
       if (stat.status === "target") {
@@ -346,11 +380,10 @@
     var st = statusFor(reading.value);
     var spark = sparkline(reading.history, 32);
     return (
-      '<span class="term-v">  nursery sump</span>\n' +
+      '<span class="term-v">  NURSERY SUMP</span>  <span class="term-flag is-live">LIVE</span>\n' +
       kv(
         "depth",
-        '<span class="term-depth">' + reading.value.toFixed(2) + " in</span>",
-        '  <span class="term-flag is-live">live</span>'
+        '<span class="term-depth">' + reading.value.toFixed(2) + " in</span>"
       ) + "\n" +
       kv(
         "status",
@@ -366,22 +399,20 @@
 
   function renderSumpOffline() {
     return (
-      '<span class="term-v">  nursery sump</span>\n' +
-      '<span class="term-dim">  connect: nursery-sump-level</span>\n' +
-      '  <span class="term-off">[offline] feed not public yet</span>\n' +
-      '<span class="term-dim">  waiting for a public, read-only feed\u2026</span>'
+      '<span class="term-v">  NURSERY SUMP</span>\n' +
+      '<span class="term-dim">  CHANNEL: NURSERY-SUMP-LEVEL</span>\n' +
+      '  <span class="term-off">LINK FAILED // FEED NOT AVAILABLE</span>\n' +
+      '<span class="term-dim">  AWAITING PUBLIC READOUT</span>'
     );
   }
 
-  function render(body, live, reading, offline) {
+  function render(body, live, reading, offline, animate) {
     var stKey = "offline";
-    var titleText = "farmstats \u2014 offline";
-    var sr = "Nursery sump level is offline. The live feed is not public yet.";
+    var sr = "Nursery sump level is offline. The live feed is not available.";
     var sumpHtml;
     if (reading && !offline) {
       var st = statusFor(reading.value);
       stKey = st.key;
-      titleText = "farmstats \u2014 " + st.label.toLowerCase();
       sr =
         "Nursery sump water level is " + reading.value.toFixed(2) +
         " inches, " + st.label + ", last updated " + formatTime(reading.createdAt) +
@@ -392,17 +423,13 @@
     }
 
     var term = body.closest(".term");
-    if (term) {
-      term.setAttribute("data-status", stKey);
-      var title = term.querySelector(".term-title");
-      if (title) title.textContent = titleText;
-    }
+    if (term) term.setAttribute("data-status", stKey);
 
-    body.innerHTML =
-      promptLine() + "\n" +
-      sumpHtml + "\n\n" +
-      renderTargets() + "\n" +
-      promptLine() + " " + cursor();
+    setBody(
+      body,
+      headerHtml(stKey) + "\n\n" + sumpHtml + "\n\n" + renderTargets(),
+      !!animate
+    );
     live.textContent = sr;
   }
 
@@ -500,20 +527,20 @@
 
     var sump = STATS.filter(function (s) { return s.id === "sump"; })[0];
 
-    function tick() {
+    function tick(animate) {
       loadLive(sump).then(function (reading) {
-        render(body, live, reading, false);
+        render(body, live, reading, false, animate);
       }).catch(function () {
-        render(body, live, null, true);
+        render(body, live, null, true, animate);
       });
     }
 
-    body.innerHTML = promptLine() + "\n" +
-      '<span class="term-dim">  fetching nursery-sump-level\u2026</span>\n' +
-      renderTargets() + "\n" +
-      promptLine() + " " + cursor();
+    body.innerHTML =
+      headerHtml("offline") + "\n\n" +
+      '<span class="term-dim">  STANDBY // FETCHING SUMP LEVEL</span>\n\n' +
+      renderTargets();
     live.textContent = "Loading nursery sump water level.";
-    tick();
+    tick(true);
     setInterval(tick, REFRESH_MS);
     document.addEventListener("visibilitychange", function () {
       if (!document.hidden) tick();
