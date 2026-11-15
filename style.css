@@ -252,7 +252,7 @@ html, body { overflow-x: clip; }
   .photo-chip { font-size: .68rem; padding: .22rem .5rem; left: .5rem; bottom: .5rem; white-space: nowrap; }
 }
 
-/* Farm stats — MU/TH/UR 6000 console look. Original styling only. */
+/* Farm stats — nursery systems console readout. Original styling only. */
 .visually-hidden {
   position: absolute;
   width: 1px; height: 1px;
