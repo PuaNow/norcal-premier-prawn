@@ -1,12 +1,12 @@
-/* Farm stats widget — public Adafruit IO read only. No API key is used. */
+/* Farm stats widget — public Adafruit IO read only. No API key is used.
+ *
+ * To add a live reading later: set that stat's status to "live" and
+ * fill in feed: { user: "PuaNow", key: "your-feed-key" }. Leave
+ * target in place as the normal range. Do not invent values.
+ */
 (function () {
   "use strict";
 
-  var USER = "PuaNow";
-  var FEED = "nursery-sump-level";
-  var LAST_URL = "https://io.adafruit.com/api/v2/" + USER + "/feeds/" + FEED + "/data/last";
-  var CHART_URL = "https://io.adafruit.com/api/v2/" + USER + "/feeds/" + FEED + "/data/chart?hours=24";
-  var DATA_URL = "https://io.adafruit.com/api/v2/" + USER + "/feeds/" + FEED + "/data?limit=240";
   var REFRESH_MS = 60000;
   var TZ = "America/Los_Angeles";
   var TIMEOUT_MS = 12000;
@@ -16,6 +16,116 @@
   var IGNORE_WINDOW_MS = 3 * 60 * 1000;
 
   var BLOCKS = ["\u2581", "\u2582", "\u2583", "\u2584", "\u2585", "\u2586", "\u2587", "\u2588"];
+  var LABEL_W = 11;
+
+  /*
+   * Per-stat config. status is "live", "target", or "info".
+   * Live rows need a feed and are fetched client-side with no key.
+   * Target rows show a published range only — never a fake reading.
+   * Ranges: NCRAC FS 124 (2021) Table 1 Ideal, except alkalinity
+   * from Virginia Tech AREC-314P (2026) Table 1.
+   */
+  var STATS = [
+    {
+      id: "sump",
+      label: "depth",
+      unit: "in",
+      status: "live",
+      value: null,
+      target: "2\u20134 in",
+      feed: { user: "PuaNow", key: "nursery-sump-level" },
+      title: "nursery sump water level"
+    },
+    {
+      id: "do",
+      label: "DO",
+      unit: "mg/L",
+      status: "target",
+      value: null,
+      target: "\u2265 5.0 mg/L",
+      feed: null,
+      title: "dissolved oxygen"
+    },
+    {
+      id: "temp",
+      label: "temp",
+      unit: "\u00b0C",
+      status: "target",
+      value: null,
+      target: "28.5 \u00b0C (82\u201384 \u00b0F)",
+      feed: null,
+      title: "water temperature"
+    },
+    {
+      id: "ph",
+      label: "pH",
+      unit: "",
+      status: "target",
+      value: null,
+      target: "7.5\u20138.0",
+      feed: null,
+      title: "pH"
+    },
+    {
+      id: "salinity",
+      label: "salinity",
+      unit: "ppt",
+      status: "target",
+      value: null,
+      target: "10\u201320 ppt",
+      feed: null,
+      title: "salinity"
+    },
+    {
+      id: "tan",
+      label: "TAN",
+      unit: "mg/L",
+      status: "target",
+      value: null,
+      target: "< 0.2 mg/L",
+      feed: null,
+      title: "total ammonia nitrogen"
+    },
+    {
+      id: "nitrite",
+      label: "nitrite",
+      unit: "mg/L",
+      status: "target",
+      value: null,
+      target: "< 1.0 mg/L",
+      feed: null,
+      title: "nitrite"
+    },
+    {
+      id: "alkalinity",
+      label: "alkalinity",
+      unit: "mg/L",
+      status: "target",
+      value: null,
+      target: "140\u2013180 mg/L CaCO3",
+      feed: null,
+      title: "alkalinity"
+    },
+    {
+      id: "system",
+      label: "system",
+      status: "info",
+      value: "RAS (recirculating)",
+      target: null,
+      feed: null,
+      title: "system type"
+    },
+    {
+      id: "species",
+      label: "species",
+      status: "info",
+      value: "Pacific whiteleg shrimp",
+      detail: "L. vannamei",
+      target: null,
+      feed: null,
+      title: "species"
+    }
+  ];
 
   function $(id) {
     return document.getElementById(id);
@@ -67,6 +177,22 @@
     return "24h";
   }
 
+  function padRight(s, n) {
+    s = String(s);
+    while (s.length < n) s += " ";
+    return s;
+  }
+
+  function feedUrls(feed) {
+    var base = "https://io.adafruit.com/api/v2/" +
+      encodeURIComponent(feed.user) + "/feeds/" + encodeURIComponent(feed.key);
+    return {
+      last: base + "/data/last",
+      chart: base + "/data/chart?hours=24",
+      data: base + "/data?limit=240"
+    };
+  }
+
   function promptLine() {
     return (
       '<span class="term-prompt">' +
@@ -84,28 +210,12 @@
     return '<span class="term-cursor" aria-hidden="true"></span>';
   }
 
-  function renderOffline(body, live, reason) {
-    body.innerHTML =
-      promptLine() + "\n" +
-      '<span class="term-dim">connect: nursery-sump-level</span>\n' +
-      '<span class="term-off">[offline] feed not public yet</span>\n' +
-      '<span class="term-dim">waiting for a public, read-only feed\u2026</span>\n' +
-      promptLine() + " " + cursor();
-    live.textContent = "Nursery sump level is offline. The live feed is not public yet.";
-    var term = body.closest(".term");
-    if (term) {
-      term.setAttribute("data-status", "offline");
-      var title = term.querySelector(".term-title");
-      if (title) title.textContent = "farmstats \u2014 offline";
-    }
-  }
-
-  function renderLoading(body, live) {
-    body.innerHTML =
-      promptLine() + "\n" +
-      '<span class="term-dim">fetching nursery-sump-level\u2026</span>\n' +
-      promptLine() + " " + cursor();
-    live.textContent = "Loading nursery sump water level.";
+  function kv(label, valueHtml, flagHtml) {
+    return (
+      '<span class="term-k">  ' + padRight(label, LABEL_W) + "</span>" +
+      valueHtml +
+      (flagHtml ? flagHtml : "")
+    );
   }
 
   function sparkline(points, cols) {
@@ -160,7 +270,7 @@
     return { line: chars, label: formatSpan(span) };
   }
 
-  function gaugeHtml(inches, statusKey) {
+  function gaugeHtml(inches) {
     var cols = 32;
     var max = 8;
     var clamped = Math.max(0, Math.min(inches, max));
@@ -202,36 +312,98 @@
     );
   }
 
-  function renderLive(body, live, reading) {
-    var st = statusFor(reading.value);
-    var spark = sparkline(reading.history, 32);
-    var term = body.closest(".term");
-    if (term) {
-      term.setAttribute("data-status", st.key);
-      var title = term.querySelector(".term-title");
-      if (title) title.textContent = "farmstats \u2014 " + st.label.toLowerCase();
-    }
-    body.innerHTML =
-      promptLine() + "\n" +
-      '<span class="term-k">  tank      </span><span class="term-v">nursery sump</span>\n' +
-      '<span class="term-k">  depth     </span><span class="term-depth">' + reading.value.toFixed(2) + " in</span>\n" +
-      '<span class="term-k">  status    </span><span class="term-status is-' + st.key + '">' + escapeHtml(st.label.toUpperCase()) + "</span>" +
-        '  <span class="term-hint">' + escapeHtml(st.hint) + "</span>\n" +
-      '<span class="term-k">  updated   </span><span class="term-v">' + escapeHtml(formatTime(reading.createdAt)) + "</span>\n\n" +
-      gaugeHtml(reading.value, st.key) + "\n\n" +
-      '<span class="term-sparkrow"><span class="term-k">  ' + padRight(spark.label, 8) + "</span>" +
-        '<span class="term-spark">' + (spark.line || "\u2014") + "</span></span>\n" +
-      promptLine() + " " + cursor();
-
-    live.textContent =
-      "Nursery sump water level is " + reading.value.toFixed(2) +
-      " inches, " + st.label + ", last updated " + formatTime(reading.createdAt) + ".";
+  function renderTargets() {
+    var sawInfo = false;
+    var lines = [
+      '<span class="term-comment">  # targets \u2014 live sensors coming soon</span>'
+    ];
+    STATS.forEach(function (stat) {
+      if (stat.status === "target") {
+        lines.push(
+          kv(
+            stat.label,
+            '<span class="term-flag">target</span>  <span class="term-target">' + escapeHtml(stat.target) + "</span>"
+          )
+        );
+      } else if (stat.status === "info") {
+        if (!sawInfo) {
+          lines.push("");
+          sawInfo = true;
+        }
+        lines.push(kv(stat.label, '<span class="term-v">' + escapeHtml(stat.value) + "</span>"));
+        if (stat.detail) {
+          lines.push(
+            '<span class="term-k">  ' + padRight("", LABEL_W) + "</span>" +
+            '<span class="term-dim">(' + escapeHtml(stat.detail) + ")</span>"
+          );
+        }
+      }
+    });
+    return lines.join("\n");
   }
 
-  function padRight(s, n) {
-    s = String(s);
-    while (s.length < n) s += " ";
-    return s;
+  function renderSumpLive(reading) {
+    var st = statusFor(reading.value);
+    var spark = sparkline(reading.history, 32);
+    return (
+      '<span class="term-v">  nursery sump</span>\n' +
+      kv(
+        "depth",
+        '<span class="term-depth">' + reading.value.toFixed(2) + " in</span>",
+        '  <span class="term-flag is-live">live</span>'
+      ) + "\n" +
+      kv(
+        "status",
+        '<span class="term-status is-' + st.key + '">' + escapeHtml(st.label.toUpperCase()) + "</span>",
+        '  <span class="term-hint">' + escapeHtml(st.hint) + "</span>"
+      ) + "\n" +
+      kv("updated", '<span class="term-v">' + escapeHtml(formatTime(reading.createdAt)) + "</span>") + "\n\n" +
+      gaugeHtml(reading.value) + "\n\n" +
+      '<span class="term-sparkrow"><span class="term-k">  ' + padRight(spark.label, LABEL_W) + "</span>" +
+        '<span class="term-spark">' + (spark.line || "\u2014") + "</span></span>"
+    );
+  }
+
+  function renderSumpOffline() {
+    return (
+      '<span class="term-v">  nursery sump</span>\n' +
+      '<span class="term-dim">  connect: nursery-sump-level</span>\n' +
+      '  <span class="term-off">[offline] feed not public yet</span>\n' +
+      '<span class="term-dim">  waiting for a public, read-only feed\u2026</span>'
+    );
+  }
+
+  function render(body, live, reading, offline) {
+    var stKey = "offline";
+    var titleText = "farmstats \u2014 offline";
+    var sr = "Nursery sump level is offline. The live feed is not public yet.";
+    var sumpHtml;
+    if (reading && !offline) {
+      var st = statusFor(reading.value);
+      stKey = st.key;
+      titleText = "farmstats \u2014 " + st.label.toLowerCase();
+      sr =
+        "Nursery sump water level is " + reading.value.toFixed(2) +
+        " inches, " + st.label + ", last updated " + formatTime(reading.createdAt) +
+        ". Other water-quality stats are shown as target ranges until live sensors are added.";
+      sumpHtml = renderSumpLive(reading);
+    } else {
+      sumpHtml = renderSumpOffline();
+    }
+
+    var term = body.closest(".term");
+    if (term) {
+      term.setAttribute("data-status", stKey);
+      var title = term.querySelector(".term-title");
+      if (title) title.textContent = titleText;
+    }
+
+    body.innerHTML =
+      promptLine() + "\n" +
+      sumpHtml + "\n\n" +
+      renderTargets() + "\n" +
+      promptLine() + " " + cursor();
+    live.textContent = sr;
   }
 
   function parseLast(json) {
@@ -294,11 +466,15 @@
     return promise.finally(function () { clearTimeout(timer); });
   }
 
-  function load() {
+  function loadLive(stat) {
+    if (stat.status !== "live" || !stat.feed) {
+      return Promise.resolve(null);
+    }
+    var urls = feedUrls(stat.feed);
     var controller = new AbortController();
-    var lastP = withTimeout(fetchJson(LAST_URL, controller.signal), TIMEOUT_MS, controller);
-    var chartP = withTimeout(fetchJson(CHART_URL, controller.signal), TIMEOUT_MS, controller).catch(function () { return null; });
-    var dataP = withTimeout(fetchJson(DATA_URL, controller.signal), TIMEOUT_MS, controller).catch(function () { return null; });
+    var lastP = withTimeout(fetchJson(urls.last, controller.signal), TIMEOUT_MS, controller);
+    var chartP = withTimeout(fetchJson(urls.chart, controller.signal), TIMEOUT_MS, controller).catch(function () { return null; });
+    var dataP = withTimeout(fetchJson(urls.data, controller.signal), TIMEOUT_MS, controller).catch(function () { return null; });
     return Promise.all([lastP, chartP, dataP]).then(function (parts) {
       var last = parseLast(parts[0]);
       var history = parseHistory(parts[1], parts[2]);
@@ -311,6 +487,8 @@
         err.code = "private";
         throw err;
       }
+      stat.value = last.value;
+      stat.createdAt = last.createdAt;
       return { value: last.value, createdAt: last.createdAt, history: history };
     });
   }
@@ -320,20 +498,23 @@
     var live = $("farmstats-live");
     if (!body || !live) return;
 
-    var timer = null;
+    var sump = STATS.filter(function (s) { return s.id === "sump"; })[0];
 
     function tick() {
-      load().then(function (reading) {
-        renderLive(body, live, reading);
-      }).catch(function (err) {
-        renderOffline(body, live, (err && err.code) || "offline");
+      loadLive(sump).then(function (reading) {
+        render(body, live, reading, false);
+      }).catch(function () {
+        render(body, live, null, true);
       });
     }
 
-    renderLoading(body, live);
+    body.innerHTML = promptLine() + "\n" +
+      '<span class="term-dim">  fetching nursery-sump-level\u2026</span>\n' +
+      renderTargets() + "\n" +
+      promptLine() + " " + cursor();
+    live.textContent = "Loading nursery sump water level.";
     tick();
-    timer = setInterval(tick, REFRESH_MS);
-
+    setInterval(tick, REFRESH_MS);
     document.addEventListener("visibilitychange", function () {
       if (!document.hidden) tick();
     });
