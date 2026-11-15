@@ -252,7 +252,7 @@ html, body { overflow-x: clip; }
   .photo-chip { font-size: .68rem; padding: .22rem .5rem; left: .5rem; bottom: .5rem; white-space: nowrap; }
 }
 
-/* Farm stats terminal widget */
+/* Farm stats — MU/TH/UR 6000 console look. Original styling only. */
 .visually-hidden {
   position: absolute;
   width: 1px; height: 1px;
@@ -262,130 +262,135 @@ html, body { overflow-x: clip; }
 }
 .farmstats .body { margin-bottom: 1.5rem; }
 .term {
-  --term-bg: #070b08;
-  --term-line: rgba(143, 188, 143, 0.28);
-  --term-glow: rgba(111, 183, 194, 0.18);
-  --term-amber: #e2c97a;
-  --term-alert: #ff6b6b;
-  --term-below: #8bb8d0;
+  --term-bg: #010301;
+  --term-fg: #7cff4d;
+  --term-dim: #3d8a32;
+  --term-line: rgba(124, 255, 77, 0.35);
+  --term-glow: rgba(80, 255, 60, 0.22);
+  --term-amber: #e6c04a;
+  --term-alert: #ff5a2a;
+  --term-below: #8fd0ff;
   width: min(42rem, 100%);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 28%),
-    var(--term-bg);
+  background: var(--term-bg);
   border: 1px solid var(--term-line);
-  border-radius: 14px;
+  border-radius: 0;
   box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.4),
-    0 18px 40px -18px rgba(0, 0, 0, 0.75),
-    0 0 48px -16px var(--term-glow);
+    0 0 0 1px rgba(0, 0, 0, 0.8),
+    0 0 28px -6px var(--term-glow),
+    inset 0 0 80px rgba(0, 0, 0, 0.55);
   overflow: hidden;
   font-family: "IBM Plex Mono", "JetBrains Mono", "DM Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-}
-.term-chrome {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.55rem 0.85rem;
-  background: rgba(255, 255, 255, 0.03);
-  border-bottom: 1px solid var(--term-line);
-}
-.term-dots { display: inline-flex; gap: 0.35rem; }
-.term-dots i {
-  display: block; width: 0.62rem; height: 0.62rem; border-radius: 50%;
-}
-.term-dots i:nth-child(1) { background: #e07a6d; }
-.term-dots i:nth-child(2) { background: #e2c97a; }
-.term-dots i:nth-child(3) { background: #8fbc8f; }
-.term-title {
-  color: var(--muted);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.term-body {
-  margin: 0;
-  padding: 1.05rem 1.1rem 1.15rem;
-  color: var(--fg);
-  font-size: 0.86rem;
-  line-height: 1.55;
-  letter-spacing: 0.01em;
-  white-space: pre-wrap;
-  overflow-x: auto;
-  tab-size: 4;
   position: relative;
 }
-.term-body::after {
+.term::before {
   content: "";
   pointer-events: none;
   position: absolute;
   inset: 0;
+  z-index: 2;
+  background:
+    radial-gradient(ellipse at center, transparent 52%, rgba(0, 0, 0, 0.42) 100%);
+}
+.term::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 3;
   background: repeating-linear-gradient(
     to bottom,
     transparent 0 2px,
-    rgba(0, 0, 0, 0.12) 2px 3px
+    rgba(0, 0, 0, 0.18) 2px 3px
   );
-  opacity: 0.35;
+  opacity: 0.55;
 }
-.term-prompt { font-weight: 500; }
-.term-user { color: var(--sea); }
-.term-at, .term-colon, .term-dollar { color: var(--muted); }
-.term-host { color: var(--accent); }
-.term-path { color: #b9e0c9; }
-.term-k, .term-dim, .term-scale, .term-hint { color: var(--muted); }
-.term-v { color: var(--fg); }
-.term-depth { color: #b9e0c9; font-weight: 600; }
-.term-spark { color: var(--sea); letter-spacing: 0.02em; }
+.term-body {
+  margin: 0;
+  padding: 1.15rem 1.15rem 1.25rem;
+  color: var(--term-fg);
+  font-size: 0.86rem;
+  line-height: 1.55;
+  letter-spacing: 0.04em;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  tab-size: 4;
+  position: relative;
+  text-shadow: 0 0 6px rgba(100, 255, 80, 0.45);
+}
+.term-head {
+  color: var(--term-fg);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px rgba(100, 255, 80, 0.65);
+}
+.term-rule {
+  display: block;
+  color: var(--term-dim);
+  letter-spacing: 0.14em;
+  text-shadow: none;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  min-width: 100%;
+}
+.term-k { color: var(--term-dim); text-shadow: none; text-transform: uppercase; }
+.term-dim, .term-scale, .term-hint { color: var(--term-dim); text-shadow: none; }
+.term-v { color: var(--term-fg); }
+.term-depth { color: var(--term-fg); font-weight: 700; text-shadow: 0 0 8px rgba(100, 255, 80, 0.7); }
+.term-spark { color: var(--term-fg); letter-spacing: 0.02em; opacity: 0.9; }
 .term-sparkrow { display: block; white-space: nowrap; }
-.term-comment { color: #6f8f78; font-style: italic; }
-.term-flag { color: var(--muted); letter-spacing: 0.04em; }
-.term-flag.is-live { color: var(--sea); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
-.term-target { color: var(--fg); }
-
-.term-off { color: var(--term-amber); }
-.term-caret { color: var(--accent); }
-.term-band { color: var(--accent); }
-.term-track { color: var(--muted); }
-.term-status { font-weight: 700; letter-spacing: 0.04em; }
-.term-status.is-normal { color: var(--accent); }
-.term-status.is-below { color: var(--term-below); }
-.term-status.is-above { color: var(--term-amber); }
+.term-comment { color: var(--term-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+.term-flag { color: var(--term-dim); letter-spacing: 0.08em; text-transform: uppercase; }
+.term-flag.is-live {
+  color: var(--term-fg);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px rgba(100, 255, 80, 0.7);
+}
+.term-target { color: var(--term-fg); }
+.term-off { color: var(--term-amber); text-shadow: 0 0 8px rgba(230, 192, 74, 0.45); }
+.term-caret { color: var(--term-fg); }
+.term-band { color: var(--term-fg); opacity: 0.85; }
+.term-track { color: var(--term-dim); }
+.term-statusline,
+.term-status { font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.term-statusline.is-normal,
+.term-status.is-normal { color: var(--term-fg); }
+.term-statusline.is-below,
+.term-status.is-below { color: var(--term-below); text-shadow: 0 0 8px rgba(143, 208, 255, 0.5); }
+.term-statusline.is-above,
+.term-status.is-above { color: var(--term-amber); text-shadow: 0 0 8px rgba(230, 192, 74, 0.5); }
+.term-statusline.is-offline,
+.term-statusline.is-alert,
 .term-status.is-alert {
   color: var(--term-alert);
-  text-shadow: 0 0 10px rgba(255, 107, 107, 0.45);
+  text-shadow: 0 0 10px rgba(255, 90, 42, 0.55);
 }
 .term-alert { color: var(--term-alert); font-weight: 700; }
-.g-cell { color: rgba(154, 171, 150, 0.45); }
-.g-cell.g-normal { color: rgba(143, 188, 143, 0.4); }
-.g-cell.g-fill { color: var(--accent); }
+.g-cell { color: rgba(61, 138, 50, 0.45); }
+.g-cell.g-normal { color: rgba(124, 255, 77, 0.35); }
+.g-cell.g-fill { color: var(--term-fg); }
 .term[data-status="below"] .g-cell.g-fill { color: var(--term-below); }
 .term[data-status="above"] .g-cell.g-fill { color: var(--term-amber); }
 .term[data-status="alert"] .g-cell.g-fill { color: var(--term-alert); }
 .term[data-status="alert"] {
-  --term-line: rgba(255, 107, 107, 0.4);
-  --term-glow: rgba(255, 107, 107, 0.25);
-  box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.4),
-    0 18px 40px -18px rgba(0, 0, 0, 0.75),
-    0 0 48px -16px var(--term-glow);
+  --term-line: rgba(255, 90, 42, 0.5);
+  --term-glow: rgba(255, 90, 42, 0.28);
 }
-.term[data-status="offline"] { --term-glow: rgba(226, 201, 122, 0.16); }
-.term-cursor {
-  display: inline-block;
-  width: 0.65ch;
-  height: 1em;
-  margin-left: 0.1ch;
-  background: var(--accent);
-  vertical-align: -0.15em;
-  box-shadow: 0 0 8px rgba(143, 188, 143, 0.7);
+.term[data-status="offline"] {
+  --term-glow: rgba(230, 192, 74, 0.18);
+  --term-line: rgba(230, 192, 74, 0.35);
 }
 @media (prefers-reduced-motion: no-preference) {
-  .term-cursor { animation: termblink 1.1s step-end infinite; }
-  .term[data-status="alert"] .term-status.is-alert { animation: termblink 1.1s step-end infinite; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .term-body::after { display: none; }
+  .term[data-status="alert"] .term-status.is-alert,
+  .term[data-status="alert"] .term-statusline.is-alert {
+    animation: termblink 1.1s step-end infinite;
+  }
 }
 @keyframes termblink { 50% { opacity: 0; } }
 @media (max-width: 640px) {
-  .term-body { font-size: 0.78rem; padding: 0.9rem 0.8rem 1rem; }
+  .term-body { font-size: 0.76rem; padding: 0.9rem 0.75rem 1rem; letter-spacing: 0.03em; }
+  .term-head { letter-spacing: 0.1em; }
 }
