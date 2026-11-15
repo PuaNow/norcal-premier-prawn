@@ -336,6 +336,11 @@ html, body { overflow-x: clip; }
 .term-depth { color: #b9e0c9; font-weight: 600; }
 .term-spark { color: var(--sea); letter-spacing: 0.02em; }
 .term-sparkrow { display: block; white-space: nowrap; }
+.term-comment { color: #6f8f78; font-style: italic; }
+.term-flag { color: var(--muted); letter-spacing: 0.04em; }
+.term-flag.is-live { color: var(--sea); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.term-target { color: var(--fg); }
+
 .term-off { color: var(--term-amber); }
 .term-caret { color: var(--accent); }
 .term-band { color: var(--accent); }
