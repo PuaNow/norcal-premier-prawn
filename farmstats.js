@@ -212,10 +212,8 @@
     return "NO DATA";
   }
 
-  /* Original header in the MU/TH/UR 6000 console cadence. */
   function headerHtml(stKey) {
     return (
-      '<span class="term-head">MU/TH/UR 6000</span>\n' +
       '<span class="term-head">NORCAL PREMIER PRAWN // NURSERY SYSTEMS</span>\n' +
       '<span class="term-rule">' + rule() + "</span>\n" +
       '<span class="term-head">INTERFACE READY</span>\n' +
